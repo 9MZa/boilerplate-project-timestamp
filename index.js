@@ -29,15 +29,18 @@ app.get("/api/:date?", (req, res) => {
 
   let date_string = req.params.date;
   let dateInt = parseInt(date_string);
-  let dateObj = new Date(date_string);
 
-  (/\d{5,}/.test(date_string)) ?
-    res.json({ unix: dateInt, utc: new Date(dateInt).toUTCString() }) :
-    res.json({ unix: dateObj.getTime(), utc: dateObj.toUTCString() });
-
-  dateObj.toDateString() === "Invalid Date" ? res.json({ error: "Invalid Date" }) :
-    res.json({ unix: dateObj.valueOf(), utc: dateObj.toUTCString() });
-})
+  if (/\d{5,}/.test(date_string)) {
+    res.json({ unix: dateInt, utc: new Date(dateInt).toUTCString() });
+  } else {
+    let dateObj = new Date(date_string);
+    if (dateObj.toDateString() === "Invalid Date") {
+      res.json({ error: "Invalid Date" });
+    } else {
+      res.json({ unix: dateObj.valueOf(), utc: dateObj.toUTCString() });
+    }
+  }
+});
 
 
 // listen for requests :)

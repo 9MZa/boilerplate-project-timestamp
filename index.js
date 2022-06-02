@@ -26,11 +26,11 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/:date?", (req, res) => {
-  let dateReq = req.params.date;
-  let dateInt = parseInt(dateReq);
-  let dateObj = new Date(dateReq);
+  let date_string = req.params.date;
+  let dateInt = parseInt(date_string);
+  let dateObj = new Date(date_string);
 
-  (/\d{5,}/.test(dateReq)) ?
+  (/\d{5,}/.test(date_string)) ?
     res.json({ unix: dateInt, utc: new Date(dateInt).toUTCString() }) :
     res.json({ unix: dateObj.getTime(), utc: dateObj.toUTCString() });
 
